@@ -169,11 +169,13 @@ img.leo-logo:hover, .leo-logo:hover img {
 transform: rotate(360deg);
 }
 .beian {
-text-align: center
+text-align: center;
+margin-top: 3rem;
+line-height: 1.4rem;
+font-size: 0.8rem;
 }
 .beian > a {
 color: #aaaaaa;
 display: inline-block;
-margin-top: 2vh;
 }
 .adsbygoogle { display: block }

@@ -24,6 +24,7 @@ mixin genRecipe(prj, tool)
 |
 - let prj_name = name
 |common:
+|	@echo
 |	@echo "  正在构建 通用组件..."
 |	cd ./cljs && ./prod
 |	cp ./cljs/js-out/main.js ./static/scripts/x2y.js
