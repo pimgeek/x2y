@@ -1,0 +1,29 @@
+mixin toolList(path, tool)
+  td
+    h2 !{ tool.abbrev }
+  td
+    h2
+      a(href=path) #{ tool.desc }
+doctype html
+html(lang="zh")
+  head
+    meta(charset="utf-8")
+    title #{ title }
+    meta(name="author" content="pimgeek")
+    meta(name="description" content=desc)
+    meta(name="keywords" content=keywords)
+    meta(name="viewport" content="width=device-width")
+    link(rel="shortcut icon" href="favicon.ico" type="image/x-icon")
+    link(rel="stylesheet" href="./styles/main.css" media="all")
+    style
+      |table   { margin: 0 auto; font-size: 72% }
+      |td      { padding: 0 10px 0 10px; vertical-align: baseline }
+      |td > h2 { margin: 6px; height: 30px }
+  body
+    div(class="index-page usage-pane")
+      h1 #{ title }
+      table
+        tbody
+          each tool in Object.keys(tools)
+            tr
+              +toolList(`./${ tool }`, tools[tool])

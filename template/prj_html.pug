@@ -1,0 +1,61 @@
+doctype html
+html(lang="zh")
+  head
+    meta(charset="utf-8")
+    title #{ tool_spec.title.replaceAll(/<br\/*>/ig,' ') }
+    meta(name="author" content="pimgeek")
+    meta(name="description" content= tool_spec.desc)
+    meta(name="keywords" content=tool_spec.keywords)
+    meta(name="viewport" content="width=device-width")
+    link(rel="shortcut icon" href="../favicon.ico" type="image/x-icon")
+    link(rel="stylesheet" href="../styles/main.css" media="all")
+    if tool_spec['js-libs'].length > 0
+      each lib in tool_spec['js-libs']
+        script(src=`../scripts/${ lib }`)
+  body
+    include ../dist/topbar.html
+    div(class="flex-container")
+      div(class="usage-pane")
+        h1 !{ tool_spec.title }
+        h2 #{ tool_spec.desc }
+        h3 使用说明
+        p #{ tool_spec.usage }
+        h3 示例输入
+        | !{ tool_spec["demo-in"] }
+        h3 示例输出
+        | !{ tool_spec["demo-out"] }
+      div(class="input-pane")
+        textarea(id="tx-input1" aria-label="tx-input1" class=tool_spec["tx-input1"].class hidden=tool_spec["tx-input1"].hidden readonly=tool_spec["tx-input1"].readonly)
+        textarea(id="tx-input2" aria-label="tx-input2" class="" hidden="true")
+        div(id="uploader" hidden=tool_spec["uploader"].hidden)
+          p #{ tool_spec["uploader"].label }
+          input(type="file" id="file-input" aria-label="file-input" accept=".txt")
+      div(class="output-pane")
+        textarea(id="tx-output1" aria-label="tx-output1" placeholder="如果转换不成功且原因不明，请尝试使用最新版的 Google Chrome 浏览器或 Microsoft Edge 浏览器（下载链接见顶部工具栏）。" class=tool_spec["tx-output1"].class hidden=tool_spec["tx-output1"].hidden)
+        div
+          button(id="save-btn11" aria-label="save-btn11" class=tool_spec["save-btn11"].class hidden=tool_spec["save-btn11"].hidden disabled=true) #{ tool_spec["save-btn11"].label }
+          button(id="save-btn12" aria-label="save-btn12" class=tool_spec["save-btn12"].class hidden=tool_spec["save-btn12"].hidden disabled=true) #{ tool_spec["save-btn12"].label }
+          if tool_spec["save-btn12"]["help-url"].length > 0
+            a(href=tool_spec["save-btn12"]["help-url"] target="_blank") #{ tool_spec["save-btn12"]["help-lbl"] }
+        textarea(id="tx-output2" aria-label="tx-output2" placeholder="如果转换不成功且原因不明，请尝试使用最新版的 Google Chrome 浏览器或 Microsoft Edge 浏览器（下载链接见顶部工具栏）。" class=tool_spec["tx-output2"].class hidden=tool_spec["tx-output2"].hidden)
+        div(class="lt-chooser" hidden=tool_spec["lt-chooser"].hidden)
+          input(type="radio" id="olist" name="li_type" value="olist" checked)
+          label(for="olist") 有序列表
+          input(type="radio" id="ulist" name="li_type" value="ulist")
+          label(for="ulist") 无序列表
+          input(type="radio" id="nlist" name="li_type" value="nlist")
+          label(for="nlist") 素颜列表
+        div
+          button(id="save-btn21" aria-label="save-btn21" class=tool_spec["save-btn21"].class hidden=tool_spec["save-btn21"].hidden disabled=true) #{ tool_spec["save-btn21"].label }
+          button(id="save-btn22" aria-label="save-btn22" class=tool_spec["save-btn22"].class hidden=tool_spec["save-btn22"].hidden disabled=true) #{ tool_spec["save-btn22"].label }
+        div(class="help-info")
+          h5
+            span(class="donate")
+              a(href="https://mbd.pub/o/pimgeek/") pimgeek 为你定制开发 👨🏻‍💻
+            if tool_spec['vendor-ads'].length > 0
+              | !{ tool_spec['vendor-ads'] }
+    script(src=`../scripts/${ tool_spec['tool_name'] }.js`)
+    div(class="beian")
+      include ../dist/beian.txt
+    div(class="bottom-ads")
+      include ../dist/adsense.txt

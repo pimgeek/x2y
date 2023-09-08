@@ -1,0 +1,64 @@
+|let tx_input1 = document.getElementById("tx-input1")
+|let tx_input2 = document.getElementById("tx-input2")
+|let file_input = document.getElementById("file-input")
+|let tx_output1 = document.getElementById("tx-output1")
+|let tx_output2 = document.getElementById("tx-output2")
+|let save_btn11 = document.getElementById("save-btn11")
+|save_btn11.addEventListener('click',
+|  function(e) {
+|    !{ tool_spec["save-btn11"].onclick }
+|    e.target.innerText = "#{ tool_spec['save-btn11'].feedback }"
+|  })
+|save_btn11.addEventListener('mouseout',
+|  function(e) {
+|    e.target.innerText = "#{ tool_spec['save-btn11'].label }"
+|  })
+|let save_btn12 = document.getElementById("save-btn12")
+|save_btn12.addEventListener('click',
+|  function() {
+|    !{ tool_spec["save-btn12"].onclick }
+|  })
+|let save_btn21 = document.getElementById("save-btn21")
+|save_btn21.addEventListener('click',
+|  function(e) {
+|    !{ tool_spec["save-btn21"].onclick }
+|    e.target.innerText = "#{ tool_spec['save-btn21'].feedback }"
+|  })
+|save_btn21.addEventListener('mouseout',
+|  function(e) {
+|    e.target.innerText = "#{ tool_spec['save-btn21'].label }"
+|  })
+|let save_btn22 = document.getElementById("save-btn22")
+|save_btn22.addEventListener('click',
+|  function() {
+|    !{ tool_spec["save-btn22"].onclick }
+|  })
+|let li_types = document.getElementsByName("li_type")
+|let lt_value = ""
+|function doConv() {
+|  for (var i = 0, length = li_types.length; i < length; i++) {
+|    if (li_types[i].checked) {
+|      lt_value = li_types[i].value
+|      break
+|    }
+|  }
+|  if (0 == tx_input1.value.length) { tx_input1.value = !{ tool_spec["conv-fun3"] } }
+|  tx_output1.value = !{ tool_spec["conv-fun1"] }
+|  tx_output2.value = !{ tool_spec["conv-fun2"] }
+|  save_btn11.disabled = ""
+|  save_btn12.disabled = ""
+|  save_btn21.disabled = ""
+|  save_btn22.disabled = ""
+|}
+|tx_input1.addEventListener('input', doConv)
+|tx_input2.addEventListener('input', doConv)
+|file_input.textarea_id = "tx-input2"
+|file_input.addEventListener('change', readLocalFile)
+|file_input.addEventListener('click', function(){ file_input.value = ""; tx_input1.value = "" })
+|let olist = document.getElementById("olist")
+|olist.addEventListener('click', doConv)
+|let ulist = document.getElementById("ulist")
+|ulist.addEventListener('click', doConv)
+|let nlist = document.getElementById("nlist")
+|nlist.addEventListener('click', doConv)
+|

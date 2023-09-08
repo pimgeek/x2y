@@ -1,0 +1,16 @@
+mixin homeBtn(path, text)
+  div(class="home-button")
+    a(href=path) !{ text }
+mixin toolBtn(path, text)
+  div(class="tool-button")
+    a(href=path) !{ text }
+mixin extBtn(path, text)
+  div(class="tool-button")
+    a(href=path target="_blank" rel="noopener noreferrer") !{ text }
+div(class="topbar")
+  div(class="text") 切换工具
+  each tool in Object.keys(tools)
+    +toolBtn(`../${ tool }`, tools[tool].abbrev)
+  +extBtn("https://google.cn/chrome","<img style='height: 14px; padding-top: 3px' src='https://google.cn/chrome/static/images/chrome-logo.svg'>Chrome")
+  +extBtn("https://www.microsoft.com/zh-cn/edge","<img style='height: 14px; padding-top: 3px' src='https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE4nqTh'>Edge")
+  +homeBtn("../index.html", "返回工具列表")

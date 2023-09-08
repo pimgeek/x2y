@@ -1,0 +1,51 @@
+mixin genRecipe(prj, tool)
+  |#{ tool }: common
+  |	@echo "  正在构建 #{ tool }..."
+  |	mkdir -p ./dist/#{ prj }/#{ tool }
+  |	node mkconfig.js #{ prj } #{ tool } > ./dist/#{ prj }/#{ tool }/#{ tool }.json
+  |	pug -P -O ./dist/#{ prj }/#{ tool }/#{ tool }.json -o ./tmp -E js ./template/prj_js.pug
+  |	mv ./tmp/prj_js.js ./dist/#{ prj_name }/scripts/#{ tool }.js
+  |	pug -P -O ./dist/#{ prj }/#{ tool }/#{ tool }.json -o ./tmp ./template/prj_html.pug
+  |	mv ./tmp/prj_html.html ./dist/#{ prj }/#{ tool }/index.html
+  |	rm ./dist/topbar.html
+  |	@echo
+  |
+  |
+|all: 
+- let targets = ["common"]
+- for (let tool of Object.keys(tools)) {
+-   targets.push(tool)
+- }
+  each target in targets
+    | #{ target } 
+|
+|
+|q: clean all
+|
+- let prj_name = name
+|common:
+|	@echo "  正在构建 通用组件..."
+|	cd ./cljs && ./prod
+|	cp ./cljs/js-out/main.js ./static/scripts/x2y.js
+|	mkdir -p ./dist/#{ prj_name }
+|	cp -R ./static/scripts ./dist/#{ prj_name }
+|	cp -R ./static/styles ./dist/#{ prj_name }
+|	cp -R ./static/assets ./dist/#{ prj_name }
+|	cp ./dist/#{ prj_name }/assets/favicon.ico ./dist/#{ prj_name }
+|	pug -P -O ./model/#{ prj_name }.json -o ./tmp ./template/main_html.pug
+|	mv ./tmp/main_html.html ./dist/#{ prj_name }/index.html
+|	pug -P -O ./model/#{ prj_name }.json -o ./tmp ./template/topbar_html.pug
+|	mv ./tmp/topbar_html.html ./dist/#{ prj_name }/topbar.html
+|	cp ./dist/#{ prj_name }/topbar.html ./dist/topbar.html
+|	cp ./template/*.txt ./dist
+|	@echo
+|
+|
+- targets.shift("common")
+each target in targets
+  +genRecipe(prj_name, target)
+|clean:
+|	@echo
+|	@echo "  正在清理 ./dist/* ./tmp/* ./cljs/js-out/* ./cljs/out/* ..."
+|	@echo
+|	rm -fr ./dist/* ./tmp/* ./cljs/js-out/* ./cljs/out/*

@@ -1,0 +1,51 @@
+{
+  "name": "play",
+  "title"   : "笔记内容加工转换（工具入口列表）",
+  "desc"    : "本项目主要用于测试",
+  "keywords": "笔记,加工,转换,测试",
+  "tools": {
+    "copy" : {
+      "abbrev"    : "原文<span>➠</span>副本",
+      "title"     : "原样复制",
+      "desc"      : "把内容原样复制一份",
+      "keywords"  : "笔记,复制",
+      "js-libs"   : [ "x2y.js", "utils.js" ],
+      "usage"     : "左侧粘贴原文，右侧获取副本",
+      "demo-in"   : "<pre>原始输入</pre>",
+      "demo-out"  : "<pre>原始输入</pre>",
+      "tx-input1" : { "class": "full-input", "hidden": false, "readonly": false },
+      "uploader"  : { "label": "点击按钮上传文本文件", "hidden": false },
+      "tx-output1": { "class": "full-output", "hidden": false },
+      "conv-fun1" : "x2y.core.jsCopy(tx_input1.value)",
+      "conv-fun2" : "x2y.core.jsCopy(tx_input1.value)",
+      "conv-fun3" : "x2y.core.jsCopy(tx_input2.value)",
+      "save-btn11": { "class"   : "save-clipboard",
+                      "label"   : "复制到剪贴板",
+                      "onclick" : "doCopy(tx_output1.value);",
+                      "feedback": "已复制到剪贴板 ✅",
+                      "hidden"  : false
+                    },
+      "save-btn12": { "class"   : "save-file",
+                      "label"   : "保存为纯文本文件",
+                      "onclick" : "lockoutSubmit('save-btn12'); downloadAsFile('tx-output1', getTimestamp() + '.txt')",
+                      "help-url": "",
+                      "help-lbl": "❓",
+                      "hidden"  : false
+                    },
+      "tx-output2": { "class": "half-output", "hidden": true },
+      "lt-chooser": { "hidden": true },
+      "save-btn21": { "class"  : "",
+                      "label"  : "",
+                      "onclick": "",
+                      "hidden" : true
+                    },
+      "save-btn22": { "class"  : "save-file",
+                      "label"  : "保存为 Anki 专用 CSV 文件📝",
+                      "onclick": "lockoutSubmit('save-btn22'); downloadAsFile('tx-output2', getTimestamp() + '.csv')",
+                      "hidden" : true
+                    },
+      "onload"    : "''",
+      "vendor-ads": ""
+    }
+  }
+}

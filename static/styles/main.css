@@ -1,0 +1,179 @@
+@charset "utf-8";
+html,body   { margin:0; color:white; background-color:black; height:96%; }
+textarea    { color: white; background-color: #555555; }
+a           { color: #444444; text-decoration: none; }
+a:visited   { color: dimgray; }
+.index-page { width: 80% !important; margin: 0 auto !important; }
+.h33        { height: 33% !important }
+.h35        { height: 35% !important }
+.h39        { height: 39% !important }
+.h85        { height: 85% !important }
+.h91        { height: 91% !important }
+td > h2 > span { display: inline-block; margin: 0 0.4rem; }
+.topbar { 
+display: flex; 
+flex-direction: row;
+flex-wrap: nowrap;
+padding: 10px 0 10px 10px;
+border-bottom: 1px solid lightgray;
+}
+.topbar > .text {
+line-height: 164%;
+}
+.topbar > .tool-button span {
+color: #222222;
+font-size: 88%;
+padding: 0 2px 0 2px;
+}
+.home-button {
+width: -moz-fit-content;
+width: fit-content;
+padding: 2px 5px 2px 5px;
+margin-left: 10px; 
+border-radius: 5px; 
+background-color: #ffa500;
+}
+.tool-button {
+width: -moz-fit-content;
+width: fit-content;
+padding: 2px 5px 2px 5px;
+margin-left: 10px; 
+border-radius: 5px; 
+background-color: #f5deb3;
+}
+.tool-button,.home-button a         { color: black; }
+.tool-button,.home-button a:visited { color: #212121; }
+.flex-container {
+display: flex;
+height: 80%;
+flex-wrap: nowrap;
+background-color: black;
+}
+.usage-pane       { width: 30%; margin: 5px; padding: 10px; font-size: large; }
+.usage-pane a     { display: inline-block; padding: 4px 8px 4px 8px; margin-top: 8px; border-radius: 4px; background-color: wheat; }
+.usage-pane > img { margin-left:10px; display: block; max-width:98%; }
+.usage-pane > h1  { text-align:center; color: orange; font-size: xx-large; }
+.usage-pane > h2  { text-align:center; color: snow; font-size: large; line-height:150%; margin-bottom: 20px; }
+.usage-pane > h3  { color: orange; font-size: large; margin-left: 10px; }
+.usage-pane > h4  { color: snow; text-align: center; font-size: medium; margin-left: 10px; }
+.usage-pane > p   { color: snow; font-size: medium; margin-left: 10px; }
+.usage-pane > pre {
+white-space: -moz-pre-wrap; 
+white-space: -pre-wrap;
+white-space: -o-pre-wrap;
+white-space: pre-wrap;
+word-wrap: break-word;
+font-family: monospaced; font-size: small;
+margin-left: 10px;
+padding: 15px 10px 15px 10px; 
+background-color: #222222;
+}
+.input-pane {
+width: 35%;
+height: 100%;
+display: flex;
+flex-direction: column;
+flex-wrap: nowrap;
+}
+.full-input {
+display: table-row;
+margin-top: 15px;
+width: 96%;
+height: 98%;
+}
+.fake-input {
+display: table-row;
+margin-top: 15px;
+width: 96%;
+height: 58%;
+}
+.output-pane {
+width: 35%;
+height: 100%;
+display: flex;
+flex-direction: column;
+flex-wrap: nowrap;
+}
+.output-pane button {
+border: 3px solid gray;
+}
+.output-pane button:enabled:hover {
+border: 3px solid orange;
+}
+.full-output {
+display: table-row;
+margin-top: 15px;
+width: 94%;
+height: 86%;
+}
+.half-output {
+margin-top: 15px;
+width: 94%;
+height:43%;
+}
+.save-iflytek {
+width: 90%; 
+margin-top: 15px;
+margin-right: 5px;
+}
+.save-file,
+.save-clipboard {
+width: 95%; 
+margin-top: 15px;
+}
+.lt-chooser {
+margin: 10px 0 -4px 4px;
+}
+.help-info {
+margin-bottom: -96px;
+text-align: center;
+}
+.help-info a {
+display: inline-block;
+padding: 4px 8px 4px 8px;
+margin-top: 8px;
+border-radius: 4px;
+background-color: wheat;
+}
+.help-info > h5 {
+margin-top: 10px;
+}
+.help-info > h5 > span.donate {
+display: inline;
+margin-left: 6px;
+margin-right: 6px;
+padding: 2px 0 3px 0;
+border-radius: 5px;
+font-size: 16px;
+font-weight; bold;
+background-image:radial-gradient( circle farthest-corner at 0% 0.5%, rgba(255,223,0,1) 0%, rgba(255,207,0,1) 38.1%, rgba(255,158,0,1) 100.2% );
+}
+.help-info > h5 > span.donate > a {
+color: black;
+background-color: transparent;
+}
+.leo-logo img, img.leo-logo {
+display: block;
+margin: 0 auto;
+width: 50px;
+height: 50px;
+border-radius: 50%;
+-webkit-transition: -webkit-transform 0.3s ease;
+transition: transform 0.3s ease, -webkit-transform 0.3s ease;
+}
+img.leo-logo:hover, .leo-logo:hover img {
+-o-transform: rotate(360deg);
+-ms-transform: rotate(360deg);
+-moz-transform: rotate(360deg);
+-webkit-transform: rotate(360deg);
+transform: rotate(360deg);
+}
+.beian {
+text-align: center
+}
+.beian > a {
+color: #aaaaaa;
+display: inline-block;
+margin-top: 2vh;
+}
+.adsbygoogle { display: block }
