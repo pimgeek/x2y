@@ -19,6 +19,7 @@
       "conv-fun1" : "x2y.core.jsCopy(tx_input1.value)",
       "conv-fun2" : "x2y.core.jsCopy(tx_input1.value)",
       "conv-fun3" : "x2y.core.jsCopy(tx_input2.value)",
+      "conv-notes": "conv-fun1/2, 处理来自输入框的文本，结果发送到 tx-output1/2，conv-fun3 处理来自上传按钮的文件，结果发送到 tx-input1",
       "save-btn11": { "class"   : "save-clipboard",
                       "label"   : "复制到剪贴板",
                       "onclick" : "doCopy(tx_output1.value);",

@@ -47,6 +47,5 @@ each target in targets
   +genRecipe(prj_name, target)
 |clean:
 |	@echo
-|	@echo "  正在清理 ./dist/* ./tmp/* ./cljs/js-out/* ./cljs/out/* ..."
-|	@echo
-|	rm -fr ./dist/* ./tmp/* ./cljs/js-out/* ./cljs/out/*
+|	@echo "  正在清理 ./dist/#{ name } ./dist/*.txt ./tmp/* ./cljs/js-out/* ./cljs/out/* ..."
+|	rm -fr ./dist/#{ name } ./dist/*.txt ./tmp/* ./cljs/js-out/* ./cljs/out/*

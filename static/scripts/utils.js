@@ -22,7 +22,7 @@ Date.prototype.format = function(fmt){
 }
 // 获取当前日期
 function getTimestamp(){
-  let ts = new Date().format('yyyy年MM月dd日-hh时mm分-');
+  let ts = new Date().format('yyyy年MM月dd日-hh时mm分');
   return ts
 }
 // 尝试把给定的内容写入一个 DOM 对象（TEXTAREA）
