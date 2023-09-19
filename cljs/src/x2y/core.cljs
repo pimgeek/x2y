@@ -41,9 +41,11 @@
   (let
       [sorted (sort v)
        grouped (partition-by identity sorted)
-       subtotal (map count grouped)
-       counted (map (fn [s p] {(first s) p}) grouped subtotal)]
-    (reduce merge counted)))
+       dup-groups (filter #(> (count %) 1) grouped)  ; 从码数切换到重复数
+       sub-dups (map count dup-groups)               ; 统计每组重码的个数
+       sum-dups (reduce + sub-dups)
+       ]
+    sum-dups))
 
 ;;-- 对外输出的函数定义 --
 
@@ -62,11 +64,9 @@
        first-col (get-nth-column-vec codemap 1)
        first-col-uniq (distinct first-col)
        second-col (get-nth-column-vec codemap 2)
-       second-col-uniq (distinct second-col)
        sna-elems (filter single-non-ascii? first-col-uniq)
        sna-count (count sna-elems)
-       dups-in-second-col (- (count second-col)
-                             (count second-col-uniq))]
+       dups-in-second-col (count-element-dups second-col)]
     (str "总行数：" (str line-count) "\n"
          "单字数：" (str sna-count) "\n"
-         "重码数：" (str dups-in-second-col) "\n")))
+         "冲突数：" (str dups-in-second-col) "\n")))

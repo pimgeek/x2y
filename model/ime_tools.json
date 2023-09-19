@@ -12,7 +12,7 @@
       "js-libs"   : [ "x2y.js", "utils.js" ],
       "usage"     : "左侧粘贴原文，右侧获取副本",
       "demo-in"   : "<pre>的\tu\t10359470\n的\tunid\t10359470\n一\tf\t4346343\n一\tfi\t4346343\n是\to\t3240478\n是\tots\t3240478\n不\tc\t3217018\n不\tcb\t3217018\n了\tr\t3211043\n了\trl\t3211043\n在\tn\t2565479\n在\tnggt\t2565479\n我\tt\t2302420\n我\ttupg\t2302420\n人\tj\t2289348\n人\tjr\t2289348\n他\tje\t2260948\n他\tjey\t2260948</pre>",
-      "demo-out"  : "<pre>总行数：18\n单字数：9\n重码数：0</pre>",
+      "demo-out"  : "<pre>总行数：18\n单字数：9\n冲突数：0</pre>",
       "tx-input1" : { "class": "full-input", "hidden": false, "readonly": false },
       "uploader"  : { "label": "点击按钮上传文本文件", "hidden": false },
       "tx-output1": { "class": "full-output", "hidden": false },
