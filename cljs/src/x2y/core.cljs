@@ -1,6 +1,7 @@
 (ns x2y.core
   (:require
    [clojure.string :as str] ;; 用于字符串处理
+   [markdown.core :as md]
    ))
 
 ;;-- 打印 X2Y 工具基本信息 --
@@ -43,9 +44,56 @@
        grouped (partition-by identity sorted)
        dup-groups (filter #(> (count %) 1) grouped)  ; 从码数切换到重复数
        sub-dups (map count dup-groups)               ; 统计每组重码的个数
-       sum-dups (reduce + sub-dups)
-       ]
+       sum-dups (reduce + sub-dups)]
     sum-dups))
+
+;; 给定一段大纲笔记(纯文本格式)，对它进行分块处理
+;; 确保每块都是单根结构的大纲列表
+(defn get-root-blocks [outline]
+  (str/split outline #"(?m)(?=^- )"))
+
+;; 给定一个单根结构的大纲块，获取它的所有子级节点(纯文本格式)
+;; 并对这些节点统一减少一级缩进，这样就能进一步分块
+(defn get-sub-outline [outline-block]
+  (let
+      [lines (str/split-lines outline-block)
+       sub-lines (rest lines)
+       outdent #(str/replace % #"^    " "")
+       outdented (map outdent sub-lines)]
+    (str/join "\n" outdented)))
+
+;; 给定一个单根结构的大纲块，获取它根节点的文字内容
+;; 作为当前大纲的标题，返回给调用者
+(defn get-block-title [outline-block]
+  (let
+      [lines (str/split-lines outline-block)
+       line1 (first lines)]
+    (str/replace line1 #"- " "")))
+
+;; 给定一段大纲笔记，按照 Markdown 语法解析它们
+;; 并生成对应的 HTML 代码，返回给调用者
+(defn format-answer [answer-outline]
+  (md/md->html answer-outline))
+
+;; 给定一个单根结构的大纲块 (问答结构)，把它的第一行
+;; 当作问题，其余部分当作回答，转换为 CSV 格式
+(defn format-question [question-block]
+  (let
+      [question-name (get-block-title question-block)
+       answer-outline (get-sub-outline question-block)
+       answer-html (format-answer answer-outline)]
+    (str question-name "," answer-html)))
+
+;; 给定一个单根结构的大纲块 (主题结构)，把它的第一行
+;; 当作专题名，其余部分当作问答块，转换为 CSV 格式
+(defn format-topic [topic-block]
+  (let
+      [topic-name (get-block-title topic-block)
+       question-outline (get-sub-outline topic-block)
+       question-blocks (get-root-blocks question-outline)
+       formatted-questions (map format-question question-blocks)
+       topic-added (map #(str topic-name "," %) formatted-questions)]
+    (str/join "\n" topic-added)))
 
 ;;-- 对外输出的函数定义 --
 
@@ -70,3 +118,12 @@
     (str "总行数：" (str line-count) "\n"
          "单字数：" (str sna-count) "\n"
          "冲突数：" (str dups-in-second-col) "\n")))
+
+
+;; 把输入的 Roam 大纲格式笔记转换为用于导入 Anki 的 CSV 格式
+;; 这个转换函数是为 yuelin 开发的
+(defn ^:export jsRoam2Anki [roam-outline]
+  (let
+      [topic-blocks (get-root-blocks roam-outline)
+       formatted-topics (map format-topic topic-blocks)]
+    (str/join "\n" formatted-topics)))

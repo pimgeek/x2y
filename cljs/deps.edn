@@ -1,6 +1,7 @@
 {
  :deps
   {
-    org.clojure/clojurescript {:mvn/version "1.11.60"}
+   org.clojure/clojurescript {:mvn/version "1.11.60"}
+   markdown-clj/markdown-clj {:mvn/version "1.10.8"}
   }
 }

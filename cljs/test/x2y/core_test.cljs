@@ -16,4 +16,9 @@
   (testing "测试 fread 函数"
     (is (= (count (str/split-lines (fread "../LICENSE"))) 201))))
 
+(let
+    [roam-outline "- TopicX\n    - Question_i\n        - Answer_ia\n            - ia1\n                - ia11\n                - ia12\n            - ia2\n                - ia21\n        - Answer_ib\n            - ib1\n                - ib1\n    - Question_j\n        - Answer_ja\n            - ja1\n            - ja2\n- TopicY\n    - Question_k\n"]
+  (x2y/jsRoam2Anki roam-outline)
+)
+
 (cljs.test/run-tests)
