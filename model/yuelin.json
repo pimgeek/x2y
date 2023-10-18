@@ -1,0 +1,52 @@
+{
+  "name": "yuelin",
+  "title"   : "笔记内容加工转换（工具入口列表）",
+  "desc"    : "本项目为 yuelin 定制开发",
+  "keywords": "笔记,加工,转换,测试",
+  "tools": {
+    "roam2anki" : {
+      "abbrev"    : "大纲笔记<span>➠</span>Anki",
+      "title"     : "从大纲笔记到 Anki 复习卡片",
+      "desc"      : "把大纲笔记转换为可以导入 Anki 复习工具的格式",
+      "keywords"  : "大纲笔记,Anki,导入,复习",
+      "js-libs"   : [ "x2y.js", "utils.js" ],
+      "usage"     : "左侧粘贴原文，右侧获取 Anki 导入格式",
+      "demo-in"   : "<pre>- 背单词<br>    - Bee<br>        - n. 蜜蜂，忙碌的人<br>        - Bees make honey and spread pollen<br>- 背考题<br>    - 马克思主义经济理论的基石是<br>        - 剩余价值理论</pre>",
+      "demo-out"  : "<pre>主题&middot;Topic,问题 (正面),&lt;ul&gt;&lt;li&gt;回答 (反面)&lt;/li&gt;&lt;/ul&gt;&lt;br&gt;背单词,Bee,&lt;ul&gt;&lt;li&gt;n. 蜜蜂，忙碌的人&lt;/li&gt;&lt;li&gt;Bees make honey and spread pollen&lt;/li&gt;&lt;/ul&gt;&lt;br&gt;背考题,马克思主义经济理论的基石是,&lt;ul&gt;&lt;li&gt;剩余价值理论&lt;/li&gt;&lt;/ul&gt;</pre>",
+      "tx-input1" : { "class": "full-input", "hidden": false, "readonly": false },
+      "uploader"  : { "label": "点击按钮上传文本文件", "hidden": false },
+      "tx-output1": { "class": "full-output", "hidden": false },
+      "conv-fun1" : "x2y.core.jsRoam2Anki(tx_input1.value)",
+      "conv-fun2" : "x2y.core.jsRoam2Anki(tx_input1.value)",
+      "conv-fun3" : "x2y.core.jsRoam2Anki(tx_input2.value)",
+      "conv-notes": "conv-fun1/2, 处理来自输入框的文本，结果发送到 tx-output1/2，conv-fun3 处理来自上传按钮的文件，结果发送到 tx-input1",
+      "save-btn11": { "class"   : "save-clipboard",
+                      "label"   : "复制到剪贴板",
+                      "onclick" : "doCopy(tx_output1.value);",
+                      "feedback": "已复制到剪贴板 ✅",
+                      "hidden"  : false
+                    },
+      "save-btn12": { "class"   : "save-file",
+                      "label"   : "保存为纯文本文件",
+                      "onclick" : "lockoutSubmit('save-btn12'); downloadAsFile('tx-output1', getTimestamp() + '.txt')",
+                      "help-url": "",
+                      "help-lbl": "❓",
+                      "hidden"  : true
+                    },
+      "tx-output2": { "class": "half-output", "hidden": true },
+      "lt-chooser": { "hidden": true },
+      "save-btn21": { "class"  : "",
+                      "label"  : "",
+                      "onclick": "",
+                      "hidden" : true
+                    },
+      "save-btn22": { "class"  : "save-file",
+                      "label"  : "保存为 Anki 专用 CSV 文件📝",
+                      "onclick": "lockoutSubmit('save-btn22'); downloadAsFile('tx-output2', getTimestamp() + '.csv')",
+                      "hidden" : false
+                    },
+      "onload"    : "''",
+      "vendor-ads": ""
+    }
+  }
+}
