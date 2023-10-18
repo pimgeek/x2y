@@ -47,18 +47,23 @@
        sum-dups (reduce + sub-dups)]
     sum-dups))
 
+;; 生成指定宽度的字符串
+(defn nchars [char n]
+  (reduce str (repeat n char)))
+
 ;; 给定一段大纲笔记(纯文本格式)，对它进行分块处理
 ;; 确保每块都是单根结构的大纲列表
 (defn get-root-blocks [outline]
-  (str/split outline #"(?m)(?=^- )"))
+  (str/split outline #"(?m)(?=^[*-]) "))
 
 ;; 给定一个单根结构的大纲块，获取它的所有子级节点(纯文本格式)
 ;; 并对这些节点统一减少一级缩进，这样就能进一步分块
-(defn get-sub-outline [outline-block]
+(defn get-sub-outline [outline-block ichar isize]
   (let
       [lines (str/split-lines outline-block)
        sub-lines (rest lines)
-       outdent #(str/replace % #"^    " "")
+       indent-pattern (re-pattern (str "^" (nchars ichar isize)))
+       outdent #(str/replace % indent-pattern "")
        outdented (map outdent sub-lines)]
     (str/join "\n" outdented)))
 
@@ -68,7 +73,7 @@
   (let
       [lines (str/split-lines outline-block)
        line1 (first lines)]
-    (str/replace line1 #"- " "")))
+    (str/replace line1 #"[*-] " "")))
 
 ;; 给定一段大纲笔记，按照 Markdown 语法解析它们
 ;; 并生成对应的 HTML 代码，返回给调用者
@@ -77,21 +82,21 @@
 
 ;; 给定一个单根结构的大纲块 (问答结构)，把它的第一行
 ;; 当作问题，其余部分当作回答，转换为 CSV 格式
-(defn format-question [question-block]
+(defn format-question [question-block ichar isize]
   (let
       [question-name (get-block-title question-block)
-       answer-outline (get-sub-outline question-block)
+       answer-outline (get-sub-outline question-block ichar isize)
        answer-html (format-answer answer-outline)]
     (str question-name "," answer-html)))
 
 ;; 给定一个单根结构的大纲块 (主题结构)，把它的第一行
 ;; 当作专题名，其余部分当作问答块，转换为 CSV 格式
-(defn format-topic [topic-block]
+(defn format-topic [topic-block ichar isize]
   (let
       [topic-name (get-block-title topic-block)
-       question-outline (get-sub-outline topic-block)
+       question-outline (get-sub-outline topic-block ichar isize)
        question-blocks (get-root-blocks question-outline)
-       formatted-questions (map format-question question-blocks)
+       formatted-questions (map #(format-question % ichar isize) question-blocks)
        topic-added (map #(str topic-name "," %) formatted-questions)]
     (str/join "\n" topic-added)))
 
@@ -121,9 +126,8 @@
 
 
 ;; 把输入的 Roam 大纲格式笔记转换为用于导入 Anki 的 CSV 格式
-;; 这个转换函数是为 yuelin 开发的
 (defn ^:export jsRoam2Anki [roam-outline]
   (let
       [topic-blocks (get-root-blocks roam-outline)
-       formatted-topics (map format-topic topic-blocks)]
+       formatted-topics (map #(format-topic % " " 4) topic-blocks)]
     (str/join "\n" formatted-topics)))

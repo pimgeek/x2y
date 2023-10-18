@@ -5,10 +5,10 @@
   "keywords": "笔记,加工,转换,测试",
   "tools": {
     "roam2anki" : {
-      "abbrev"    : "大纲笔记<span>➠</span>Anki",
-      "title"     : "从大纲笔记到 Anki 复习卡片",
-      "desc"      : "把大纲笔记转换为可以导入 Anki 复习工具的格式",
-      "keywords"  : "大纲笔记,Anki,导入,复习",
+      "abbrev"    : "Roam 大纲<span>➠</span>Anki",
+      "title"     : "从 Roam 大纲到 Anki 卡片",
+      "desc"      : "把 Roam 大纲转换为可以导入 Anki 复习工具的格式",
+      "keywords"  : "大纲,Roam,Anki,导入,复习",
       "js-libs"   : [ "x2y.js", "utils.js" ],
       "usage"     : "左侧粘贴原文，右侧获取 Anki 导入格式",
       "demo-in"   : "<pre>- 背单词<br>    - Bee<br>        - n. 蜜蜂，忙碌的人<br>        - Bees make honey and spread pollen<br>- 背考题<br>    - 马克思主义经济理论的基石是<br>        - 剩余价值理论</pre>",
