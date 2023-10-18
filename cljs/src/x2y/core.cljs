@@ -124,10 +124,16 @@
          "单字数：" (str sna-count) "\n"
          "冲突数：" (str dups-in-second-col) "\n")))
 
-
-;; 把输入的 Roam 大纲格式笔记转换为用于导入 Anki 的 CSV 格式
+;; 把输入的 Roam 格式大纲笔记转换为用于导入 Anki 的 CSV 格式
 (defn ^:export jsRoam2Anki [roam-outline]
   (let
       [topic-blocks (get-root-blocks roam-outline)
        formatted-topics (map #(format-topic % " " 4) topic-blocks)]
+    (str/join "\n" formatted-topics)))
+
+;; 把输入的 WorkFlowy 格式大纲笔记转换为用于导入 Anki 的 CSV 格式
+(defn ^:export jsWorkFlowy2Anki [wf-outline]
+  (let
+      [topic-blocks (get-root-blocks wf-outline)
+       formatted-topics (map #(format-topic % " " 2) topic-blocks)]
     (str/join "\n" formatted-topics)))

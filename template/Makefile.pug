@@ -7,7 +7,6 @@ mixin genRecipe(prj, tool)
   |	mv ./tmp/prj_js.js ./dist/#{ prj_name }/scripts/#{ tool }.js
   |	pug -P -O ./dist/#{ prj }/#{ tool }/#{ tool }.json -o ./tmp ./template/prj_html.pug
   |	mv ./tmp/prj_html.html ./dist/#{ prj }/#{ tool }/index.html
-  |	rm ./dist/topbar.html
   |	@echo
   |
   |
