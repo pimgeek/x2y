@@ -1,8 +1,7 @@
 (ns x2y.core
   (:require
    [clojure.string :as str] ;; 用于字符串处理
-   [markdown.core :as md]
-   ))
+   [markdown.core :as md]))
 
 ;;-- 打印 X2Y 工具基本信息 --
 (js/console.log "== x2y 文本转换/处理工具生成器 ==")
@@ -50,6 +49,38 @@
 ;; 生成指定宽度的字符串
 (defn nchars [char n]
   (reduce str (repeat n char)))
+
+;; 对给定的单行文本做缩进改变处理，其中 d1, w1, d2, w2 分别代表
+;; 原来的缩进字符 / 缩进宽度，新的缩进字符 / 缩进宽度
+(defn reindent-line [line d1 w1 d2 w2]
+  (let
+      [ipattern1 (re-pattern (str "^" d1 "+"))
+       imatch1 (re-find ipattern1 line)
+       indent1 (if imatch1 imatch1 "")
+       indent1-width (if indent1 (count indent1) 0)
+       indent2 (nchars d2 (* w2 (/ indent1-width w1)))
+       reindented (str/replace line indent1 indent2)]
+    reindented))
+
+;; 对给定的多行文本做缩进改变处理，其中 d1, w1, d2, w2 分别代表
+;; 原来的缩进字符 / 缩进宽度，新的缩进字符 / 缩进宽度
+(defn reindent-text [text d1 w1 d2 w2]
+  (let
+      [lines (str/split-lines text)
+       reindented-lines (map #(reindent-line % d1 w1 d2 w2) lines)
+       reindented-text (str/join "\n" reindented-lines)]
+    reindented-text))
+
+;; 对给定的单行文本做列表样式改变处理，其中 d1, s1, s2 分别代表
+;; 原来的缩进字符 / 列表样式，新的列表样式（缩进字符保持不变）
+(defn change-list-style [line d1 s1 s2]
+  (let
+      [ipattern1 (re-pattern (str "^(" d1 "*)" s1))
+       imatch1 (re-find ipattern1 line)
+       indent1 (if imatch1 (first imatch1) "")
+       indent2 (if indent1 (str (second imatch1) s2) "")
+       changed-line (str/replace line indent1 indent2)]
+    changed-line))
 
 ;; 给定一段大纲笔记(纯文本格式)，对它进行分块处理
 ;; 确保每块都是单根结构的大纲列表
@@ -137,3 +168,12 @@
       [topic-blocks (get-root-blocks wf-outline)
        formatted-topics (map #(format-topic % " " 2) topic-blocks)]
     (str/join "\n" formatted-topics)))
+
+;; 把输入的 Roam 格式大纲笔记转换为 Markdown 标题大纲格式
+(defn ^:export jsRoam2Markdown [roam-outline]
+  (let
+      [lines (str/split-lines roam-outline)
+       reindented-lines (map #(reindent-line % " " 4 "#" 1) lines)
+       md-lines (map #(change-list-style % "#" "- " "# ") reindented-lines)
+       md-outline (str/join "\n" md-lines)]
+    md-outline))
