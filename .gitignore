@@ -9,6 +9,7 @@ tmp
 node_modules
 cljs\/.cljs_node_repl
 cljs\/.nrepl-port
+t.cljs
 ~t.*
 \#*
 .\#*
