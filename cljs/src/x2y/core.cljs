@@ -16,15 +16,21 @@
     text2))
 
 ;; 统计文本行数
-(defn count-lines [text]
+(defn count-lines-of-text [text]
   (let
       [lines (str/split-lines text)]
     (count lines)))
 
-;; 判断给定字符是否为单个非 ASCII 字符
+;; 判断给定字符是否为单个非 ASCII 字符（单个汉字）
 (defn single-non-ascii? [s]
   (let
       [matched (re-seq #"(?u)^[^\u0000-\u007f]$" s)]
+    (if matched true false)))
+
+;; 判断给定字符是否为多个非 ASCII 字符（词组或短语）
+(defn multiple-non-ascii? [s]
+  (let
+      [matched (re-seq #"(?u)^[^\u0000-\u007f]{2,}$" s)]
     (if matched true false)))
 
 ;; 提取 TSV 文件中的第 n 列，返回纯文本
@@ -144,16 +150,83 @@
 ;; 输出码表文件的统计分析信息
 (defn ^:export jsCodemapStats [codemap]
   (let
-      [line-count (count-lines codemap)
-       first-col (get-nth-column-vec codemap 1)
+      [lines (str/split-lines codemap)
+       filtered-lines (filter #(re-matches #"^[^#\t]+\t[^\t]+(\t[^\t]+)*$" %) lines)
+       line-count (count filtered-lines)
+       filtered-text (str/join "\n" filtered-lines)
+       first-col (get-nth-column-vec filtered-text 1)
        first-col-uniq (distinct first-col)
-       second-col (get-nth-column-vec codemap 2)
+       second-col (get-nth-column-vec filtered-text 2)
        sna-elems (filter single-non-ascii? first-col-uniq)
        sna-count (count sna-elems)
+       mna-elems (filter multiple-non-ascii? first-col-uniq)
+       mna-count (count mna-elems)
        dups-in-second-col (count-element-dups second-col)]
     (str "总行数：" (str line-count) "\n"
          "单字数：" (str sna-count) "\n"
+         "词组数：" (str mna-count) "\n"
          "冲突数：" (str dups-in-second-col) "\n")))
+;;
+;;
+(defn ^:export jsLetter2Stroke [codemap]
+  (let
+      [t01 (str/replace codemap #"[Aa]" "㇋")
+       t02 (str/replace t01 #"[Bb]" "㇄")
+       t03 (str/replace t02 #"[Cc]" "𠃍")
+       t04 (str/replace t03 #"[Dd]" "㇀")
+       t05 (str/replace t04 #"[Ee]" "㇇")
+       t06 (str/replace t05 #"[Ff]" "丨")
+       t07 (str/replace t06 #"[Gg]" "亅")
+       t08 (str/replace t07 #"[Hh]" "𠄌")
+       t09 (str/replace t08 #"[Ii]" "㇀")
+       t10 (str/replace t09 #"[Jj]" "一")
+       t11 (str/replace t10 #"[Kk]" "丶")
+       t12 (str/replace t11 #"[Ll]" "㇏")
+       t13 (str/replace t12 #"[Mm]" "𡿨")
+       t14 (str/replace t13 #"[Nn]" "𠃋")
+       t15 (str/replace t14 #"[Oo]" "⺄")
+       t16 (str/replace t15 #"[Pp]" "㇊")
+       t17 (str/replace t16 #"[Qq]" "㇎")
+       t18 (str/replace t17 #"[Rr]" "𠃌")
+       t19 (str/replace t18 #"[Ss]" "丿")
+       t20 (str/replace t19 #"[Tt]" "㇁")
+       t21 (str/replace t20 #"[Uu]" "乚")
+       t22 (str/replace t21 #"[Vv]" "㇅")
+       t23 (str/replace t22 #"[Ww]" "𠄎")
+       t24 (str/replace t23 #"[Xx]" "ㄣ")
+       t25 (str/replace t24 #"[Yy]" "㇂")
+       t26 (str/replace t25 #"[Zz]" "㇉")]
+    t26))
+
+;;
+;;
+(defn ^:export jsStroke2Letter [codemap]
+  (let
+      [t01 (str/replace codemap #"㇋" "A")
+       t02 (str/replace t01 #"㇄" "B")
+       t03 (str/replace t02 #"𠃍" "C")
+       t05 (str/replace t03 #"㇇" "E")
+       t06 (str/replace t05 #"丨" "F")
+       t07 (str/replace t06 #"亅" "G")
+       t08 (str/replace t07 #"𠄌" "H")
+       t10 (str/replace t08 #"一" "J")
+       t11 (str/replace t10 #"丶" "K")
+       t12 (str/replace t11 #"㇏" "L")
+       t13 (str/replace t12 #"𡿨" "M")
+       t14 (str/replace t13 #"𠃋" "N")
+       t15 (str/replace t14 #"⺄" "O")
+       t16 (str/replace t15 #"㇊" "P")
+       t17 (str/replace t16 #"㇎" "Q")
+       t18 (str/replace t17 #"𠃌" "R")
+       t19 (str/replace t18 #"丿" "S")
+       t20 (str/replace t19 #"㇁" "T")
+       t21 (str/replace t20 #"乚" "U")
+       t22 (str/replace t21 #"㇅" "V")
+       t23 (str/replace t22 #"𠄎" "W")
+       t24 (str/replace t23 #"ㄣ" "X")
+       t25 (str/replace t24 #"㇂" "Y")
+       t26 (str/replace t25 #"㇉" "Z")]
+    t26))
 
 ;; 把输入的 Roam 格式大纲笔记转换为用于导入 Anki 的 CSV 格式
 (defn ^:export jsRoam2Anki [roam-outline]
